@@ -42,6 +42,8 @@ def processFile(file):
     print "List of chirps created of length " + str(len(chirps))
     print "*** Should be 60k ***"
 
+    np.save(file+"ValuesComplexNp", np.array(chirps))
+
 files = []
 
 for action in arr_txt:
