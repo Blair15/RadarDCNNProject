@@ -26,34 +26,34 @@ for filen in arr_txt:
     for chirp in chirps:
         if i%6 == 0:
             if action_label not in train_batch_1:
-                train_batch_1[action_label] = [[chirp]]
+                train_batch_1[action_label] = [chirp]
             else:
-                train_batch_1[action_label].append([chirp])
+                train_batch_1[action_label].append(chirp)
         if i%6 == 1:
             if action_label not in train_batch_2:
-                train_batch_2[action_label] = [[chirp]]
+                train_batch_2[action_label] = [chirp]
             else:
-                train_batch_2[action_label].append([chirp])     
+                train_batch_2[action_label].append(chirp)     
         if i%6 == 2:
             if action_label not in train_batch_3:
-                train_batch_3[action_label] = [[chirp]]
+                train_batch_3[action_label] = [chirp]
             else:
-                train_batch_3[action_label].append([chirp])
+                train_batch_3[action_label].append(chirp)
         if i%6 == 3:
             if action_label not in train_batch_4:
-                train_batch_4[action_label] = [[chirp]]
+                train_batch_4[action_label] = [chirp]
             else:
-                train_batch_4[action_label].append([chirp]) 
+                train_batch_4[action_label].append(chirp) 
         if i%6 == 4:
             if action_label not in train_batch_5:
-                train_batch_5[action_label] = [[chirp]]
+                train_batch_5[action_label] = [chirp]
             else:
-                train_batch_5[action_label].append([chirp])
+                train_batch_5[action_label].append(chirp)
         if i%6 == 5:
             if action_label not in test_batch:
-                test_batch[action_label] = [[chirp]]
+                test_batch[action_label] = [chirp]
             else:
-                test_batch[action_label].append([chirp])
+                test_batch[action_label].append(chirp)
         i += 1
     print "*** Processed " + str(filen) + " ***"
     files.append(filen)
@@ -65,5 +65,5 @@ pickle.dump(train_batch_4, open("train_batch_4.p", "wb"))
 pickle.dump(train_batch_5, open("train_batch_5.p", "wb"))
 pickle.dump(test_batch, open("test_batch.p", "wb"))
 
-print train_batch_1["Clap"][0]
+
 print files
