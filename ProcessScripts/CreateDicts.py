@@ -3,8 +3,8 @@ import gc
 import numpy as np
 import cPickle as pickle
 
-##arr_txt = [x for x in os.listdir(os.path.dirname(os.path.realpath(__file__))) if x.endswith(".npy")]
-arr_txt = ["Clap_D_Set2.datValuesComplexNp.npy"]
+arr_txt = [x for x in os.listdir(os.path.dirname(os.path.realpath(__file__))) if x.endswith(".npy")]
+##arr_txt = ["Clap_D_Set2.datValuesComplexNp.npy"]
 
 ## These are 6 Dictionaries to be pickled and reloaded into a NN
 train_batch_1 = {}
