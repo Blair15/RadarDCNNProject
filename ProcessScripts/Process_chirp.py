@@ -20,8 +20,16 @@ def processFile(file):
     print "Real and imaginary lists created of length " + str(len(re)) + " " + str(len(im))
     print "*** Should be 7,680,000 ***"
 
-    ##Now we want (128,2) vectors which represent the values collected
-    ## at each chirp of the radar by processing the re and im list which
+    re_minus_im = []
+
+    ## Rather than having 2, 128 element arrays, lets just use the
+    ##  absolute value of the difference between the corresponding real
+    ##   and imaginary parts
+    for i in range(0, len(re)):
+        re_minus_im.append(abs(re[i]-im[i]))
+
+    ##Now we want (128) element vectors which represent the values collected
+    ## at each chirp of the radar by processing the re minus im list which
     ##  should be of length 7,680,000
     
     ##chirps should be of length 60,000 once processed
@@ -33,10 +41,9 @@ def processFile(file):
     ##   with both a real and imaginary component 
     for i in range(0, 60000):
         start_index = i*128
-        end_index = ((i+1)*128)-1
-        re_chirp = np.array(re[start_index:end_index])
-        im_chirp = np.array(im[start_index:end_index])
-        chirp = np.array([re_chirp, im_chirp])
+        end_index = ((i+1)*128)
+        re_chirp = np.array(re_minus_im[start_index:end_index])
+        chirp = np.array([re_chirp])
         chirps.append(chirp)
 
     print "List of chirps created of length " + str(len(chirps))
