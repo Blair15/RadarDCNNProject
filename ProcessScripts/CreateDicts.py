@@ -5,7 +5,7 @@ import cPickle as pickle
 
 ##arr_txt = [x for x in os.listdir(os.path.dirname(os.path.realpath(__file__))) if x.endswith(".npy")]
 
-arr_txt = ["ArmFasterTowards_A_Set1.dat3sFrame.npy"]
+arr_txt = ["Walk_D_Set2.dat1sFrame.npy"]
 
 ## These are 6 Dictionaries to be pickled and reloaded into a NN
 train_batch_1 = {}

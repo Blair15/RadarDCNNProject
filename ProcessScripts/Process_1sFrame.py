@@ -4,9 +4,9 @@ import os
 
 import numpy as np
 
-arr_txt = [x for x in os.listdir(os.path.dirname(os.path.realpath(__file__))) if x.endswith(".dat")]
+##arr_txt = [x for x in os.listdir(os.path.dirname(os.path.realpath(__file__))) if x.endswith(".dat")]
 
-##arr_txt = ["ArmFasterTowards_A_Set1.dat"]
+arr_txt = ["Walk_D_Set2.dat"]
 
 def processFile(file):
     data = np.genfromtxt(file, dtype=None, delimiter='', skip_header=4)
@@ -52,19 +52,19 @@ def processFile(file):
 
     frames = []
 
-    ##split this 7,680,000 length list into 20 384,000 sections
-    ## i.e 20 3s frames
-    for i in range(0,20):
-        start_index = i*384000
-        end_index = (i+1)*384000
+    ##split this 7,680,000 length list into 60 128,000 sections
+    ## i.e 60 1s frames
+    for i in range(0,60):
+        start_index = i*128000
+        end_index = (i+1)*128000
         re_frame = re[start_index:end_index]
         im_frame = im[start_index:end_index]
         frame = [re_frame, im_frame]
         frames.append(frame)
 
-    frames = np.reshape(frames, (20,384000,2))
+    frames = np.reshape(frames, (60,128000,2))
 
-    np.save(file+"3sFrame", np.array(frames))
+    np.save(file+"1sFrame", np.array(frames))
 
 files = []
 
