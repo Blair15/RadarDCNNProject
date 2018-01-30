@@ -14,10 +14,16 @@ from sklearn.metrics import classification_report,confusion_matrix
 import csv
 from keras.models import load_model
 
+def shuffleArrays(frames, labels):
+    rng_state = np.random.get_state()
+    np.random.shuffle(frames)
+    np.random.set_state(rng_state)
+    np.random.shuffle(labels)
+
 def load_data():
 
     ##We have 20 3 second recordings for each of the 39 files
-    nb_train_samples = 6500
+    nb_train_samples = 17
 
     X_train = np.zeros((nb_train_samples, 384000, 2), dtype="uint8")
     y_train = np.zeros((nb_train_samples,), dtype="uint8")
@@ -31,58 +37,61 @@ def load_data():
         print "*** loaded train_batch_" + str(j) + " ***"
         for label in action_labels:
             action_number = action_labels.index(label)
-            for frame in data[label]:
-                X_train[i] = frame
-                y_train[i] = action_number
-                i += 1
+            if label in data.keys():
+                for frame in data[label]:
+                    X_train[i] = frame
+                    y_train[i] = action_number
+                    i += 1
         print "*** processed train_batch_" + str(j) + " ***"
 
-    nb_test_samples = 1300
+    nb_test_samples = 3
     X_test = np.zeros((nb_test_samples, 384000, 2), dtype="uint8")
     y_test = np.zeros((nb_test_samples,), dtype="uint8")
+
+    shuffleArrays(X_test, y_test)
 
     data = cPickle.load(open("test_batch.p", "rb"))
 
     i = 0
     for label in action_labels:
         action_number = action_labels.index(label)
-        for frame in data[label]:
-            X_test[i] = frame
-            y_test[i] = action_number
-            i+=1
+        if label in data.keys():
+            for frame in data[label]:
+                X_test[i] = frame
+                y_test[i] = action_number
+                i+=1
 
     return (X_train, y_train), (X_test, y_test)
 
 def VGG_16(weights_path=None):
     model = Sequential()
-    input_shape=(384000,2)
-    model.add(Convolution1D(256, 9, padding='same', activation='relu', input_shape=(384000,2)))
-    model.add(Convolution1D(256, 9, padding='same', activation='relu'))
+    model.add(Convolution1D(32, 1000, padding='same', activation='relu', input_shape=(384000,2)))
+    #model.add(Convolution1D(256, 9, padding='same', activation='relu'))
     model.add(MaxPooling1D(2))
 
-    model.add(Convolution1D(512, 9, padding='same', activation='relu'))
-    model.add(Convolution1D(512, 9, padding='same', activation='relu'))
+    #model.add(Convolution1D(512, 9, padding='same', activation='relu'))
+    model.add(Convolution1D(32, 1000, padding='same', activation='relu'))
     model.add(MaxPooling1D((2)))
 
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    model.add(Convolution1D(64, 500, padding='same', activation='relu'))
     model.add(MaxPooling1D(4))
 
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    model.add(Convolution1D(64, 500, padding='same', activation='relu'))
     model.add(MaxPooling1D((4)))
 
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
-    model.add(MaxPooling1D(4))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(Convolution1D(1024, 15, padding='same', activation='relu'))
+    #model.add(MaxPooling1D(4))
 
     model.add(Flatten())
-    model.add(Dense(4096, activation='relu'))
+    model.add(Dense(512, activation='relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(4096, activation='relu'))
+    model.add(Dense(512, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(7, activation='softmax'))
 
@@ -91,7 +100,7 @@ def VGG_16(weights_path=None):
 
     return model
 
-batch_size = 10
+batch_size = 1
 nb_classes = 7
 nb_epoch = 10
 (X_train, y_train), (X_test, y_test) = load_data()
@@ -121,5 +130,5 @@ print str(y_pred)
 target_names = ["Walk", "Clap", "ArmSlowerTowards", "ArmFasterTowards", "PickUp", "SitAndStand", "CircleArm"]
 print classification_report(np.argmax(Y_test,axis=1), y_pred,target_names=target_names)
 print confusion_matrix(np.argmax(Y_test,axis=1), y_pred)
-                                                                106,29        Bot
+
 

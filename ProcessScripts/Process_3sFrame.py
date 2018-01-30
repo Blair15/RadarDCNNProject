@@ -24,9 +24,6 @@ def processFile(file):
     print "Real and imaginary lists created of length " + str(len(re)) + " " + str(len(im))
     print "*** Should be 7,680,000 ***"
 
-    ##Now we want (128) element vectors which represent the values collected
-    ## at each chirp of the radar by processing the re minus im list which
-    ##  should be of length 7,680,000
     
     ##sweeps should be of length 60,000 once processed
     ##sweeps = []
